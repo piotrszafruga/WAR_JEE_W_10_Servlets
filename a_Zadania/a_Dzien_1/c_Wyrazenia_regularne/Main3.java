@@ -12,48 +12,23 @@ import java.util.regex.Pattern;
 
 public class Main3 {
 
+    private static final String REGEX = "(\\d+[+\\-*\\/])*\\d+=\\d+";
+
     public static void main(String[] args) {
-
         Scanner scan = new Scanner(System.in);
-
-        while (true) {
-            System.out.println("Podaj tekst:");
-            String line = scan.nextLine();
-            if (line.equals("quit")) {
-                break;
-            } else {
-                String shortStr = replaceAll(line);
-                String path = "a_Zadania/a_Dzien_1/c_Wyrazenia_regularne/operations.txt";
-                System.out.println("sdf");
-                if (checkEquation(shortStr)) {
-//                        try {
-//                            Files.write(Paths.get(path), shortStr.getBytes());
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-                    try {
-                        FileWriter fw = new FileWriter(path, true);
-                        fw.append(shortStr + System.lineSeparator());
-                        fw.close();
-                    } catch (IOException e) {
-                        System.out.println("Blad pliku");
-                    }
+        System.out.println("Podaj tekst:");
+        String line = scan.nextLine();
+        try {
+            while (!line.equals("quit")) {
+                FileWriter fw = new FileWriter("operations.txt", true);
+                line = line.replaceAll("\\s+", "");
+                if (line.matches(REGEX)) {
+                    fw.append(line + System.lineSeparator());
+                    fw.close();
                 }
             }
+        } catch(IOException e) {
+            System.out.println("Błąd pliku");
         }
-
-
     }
-
-    public static String replaceAll(String str) {
-        return str.replace(" ", "");
-    }
-
-    public static boolean checkEquation(String str) {
-        String regex = "(\\d+[+\\-*\\/])*\\d+=\\d+";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(str);
-        return matcher.matches();
-    }
-
 }
